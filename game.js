@@ -8,70 +8,74 @@ let carAngle = 0;
 let isDrifting = false;
 
 function startGame(carType) {
+    // Hide the car selection screen and display the canvas
     document.querySelector('.car-selection').style.display = 'none';
     canvas.style.display = 'block';
 
-    // Select car based on type
+    // Select car based on the type chosen
     if (carType === 'm4') {
-        carImage.src = 'images/bmw-m4.png';  // Replace with actual image path
+        carImage.src = 'images/bmw-m4.png'; // Update with actual image path
     } else if (carType === 'truck') {
-        carImage.src = 'images/truck.png';  // Replace with actual image path
+        carImage.src = 'images/truck.png'; // Update with actual image path
     } else if (carType === 'ae86') {
-        carImage.src = 'images/ae86.png';  // Replace with actual image path
+        carImage.src = 'images/ae86.png'; // Update with actual image path
     } else if (carType === 'skyline') {
-        carImage.src = 'images/skyline.png';  // Replace with actual image path
+        carImage.src = 'images/skyline.png'; // Update with actual image path
     }
 
+    // Make sure the game loop starts once the image is loaded
     carImage.onload = function() {
         gameLoop();
-    }
+    };
 }
 
+// Game loop
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw car
+    // Draw the car
     ctx.save();
     ctx.translate(carX, carY);
     ctx.rotate(carAngle);
     ctx.drawImage(carImage, -carImage.width / 2, -carImage.height / 2);
     ctx.restore();
 
-    // Car movement
+    // Car movement logic
     if (isDrifting) {
-        carX += Math.cos(carAngle) * carSpeed * 1.5;
+        carX += Math.cos(carAngle) * carSpeed * 1.5; // Drift faster
         carY += Math.sin(carAngle) * carSpeed * 1.5;
     } else {
         carX += Math.cos(carAngle) * carSpeed;
         carY += Math.sin(carAngle) * carSpeed;
     }
 
-    // Keep car within canvas bounds
+    // Keep the car inside the canvas bounds
     if (carX < 0) carX = canvas.width;
     if (carX > canvas.width) carX = 0;
     if (carY < 0) carY = canvas.height;
     if (carY > canvas.height) carY = 0;
 
+    // Request the next frame for animation
     requestAnimationFrame(gameLoop);
 }
 
-// Keyboard controls for car movement and drifting
+// Listen for keyboard controls
 document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowUp') {
-        carSpeed = 7;  // Speed up
+        carSpeed = 7; // Speed up
     } else if (e.key === 'ArrowDown') {
-        carSpeed = 3;  // Slow down
+        carSpeed = 3; // Slow down
     } else if (e.key === 'ArrowLeft') {
-        carAngle -= 0.05;  // Turn left
+        carAngle -= 0.05; // Turn left
     } else if (e.key === 'ArrowRight') {
-        carAngle += 0.05;  // Turn right
+        carAngle += 0.05; // Turn right
     } else if (e.key === ' ') {
-        isDrifting = true;  // Drift
+        isDrifting = true; // Drift
     }
 });
 
 document.addEventListener('keyup', function(e) {
     if (e.key === ' ') {
-        isDrifting = false;  // Stop drifting
+        isDrifting = false; // Stop drifting
     }
 });
